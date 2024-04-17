@@ -1,9 +1,12 @@
 const express = require("express");
 const ejs = require("ejs");
+const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
 
 const ExpressError = require("./ErrorHandling/expressError");
+const todoRouter = require("./Router/todo");
+const projectRouter = require("./Router/project");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/listify");
@@ -19,17 +22,15 @@ app.use(express.urlencoded({ extended: true }));
 // use ejs-locals for all ejs templates:
 app.engine("ejs", engine);
 
-app.set("views", __dirname + "/views");
+app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 
 //home page
 app.get("/", (req, res) => {
   res.render("home");
 });
-//router for todo
-app.get("/todo", (req, res) => {
-  res.render("todo");
-});
+app.use("/", todoRouter);
+app.use("/", projectRouter);
 
 //if page is not define
 app.get("*", (req, res, next) => {
