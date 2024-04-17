@@ -1,6 +1,7 @@
 const express = require("express");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const engine = require("ejs-mate");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/listify");
@@ -12,8 +13,16 @@ db.once("open", () => {
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("done");
+app.use(express.urlencoded({ extended: true }));
+// use ejs-locals for all ejs templates:
+app.engine("ejs", engine);
+
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
+
+//router for todo
+app.get("/todo", (req, res) => {
+  res.render("todo");
 });
 
 const port = 3000;
