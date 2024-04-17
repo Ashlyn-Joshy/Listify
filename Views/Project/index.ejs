@@ -3,8 +3,16 @@
 
 <a href="/project/new" class="btn btn-primary">Add new project</a>
 
-<ul>
+<div class="m-2 row">
   <% for(let p of project){ %>
-  <li><a href="/project/<%= p.id %>"><%= p.title %></a></li>
+  <div class="card my-2 col-xl-3 col-lg-4 col-md-6 col-sm-12">
+    <div class="card-body">
+      <h5 class="card-title"><%= p.title %></h5>
+      <p class="card-text"><%= p.description %></p>
+      <a href="/project/<%= p.id %>" class="card-link btn btn-primary"
+        >View Project</a
+      >
+    </div>
+  </div>
   <% } %>
-</ul>
+</div>

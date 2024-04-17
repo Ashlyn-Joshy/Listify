@@ -1,0 +1,43 @@
+<% layout('layout/boilerplate') -%>
+<div class="col-md-6 offset-md-3">
+  <h1>Edit Project</h1>
+
+  <form
+    action="/project/<%= project.id %>?_method=PUT"
+    method="post"
+    class="form-validation"
+    novalidate
+  >
+    <div class="mb-3">
+      <label class="form-label" for="title">Title</label>
+      <input
+        type="text"
+        name="title"
+        id="title"
+        class="form-control"
+        value="<%= project.title %>"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="description"
+        >Description about the todo</label
+      >
+      <textarea
+        name="description"
+        id="description"
+        cols="30"
+        rows="10"
+        class="form-control"
+        required
+      >
+<%= project.description %></textarea
+      >
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <button class="btn btn-success">Submit</button>
+  </form>
+</div>

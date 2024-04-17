@@ -3,6 +3,7 @@ const ejs = require("ejs");
 const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
+const methodOverride = require("method-override");
 
 const ExpressError = require("./ErrorHandling/expressError");
 const todoRouter = require("./Router/todo");
@@ -19,6 +20,7 @@ db.once("open", () => {
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 // use ejs-locals for all ejs templates:
 app.engine("ejs", engine);
 
