@@ -11,6 +11,12 @@ const projectSchema = new Schema({
   createdDate: {
     type: Date,
   },
+  todos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Todo",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Project", projectSchema);

@@ -25,7 +25,7 @@ router.post("/project", async (req, res) => {
 router.get("/project/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const project = await Project.findById(id);
+    const project = await Project.findById(id).populate("todos");
     res.render("Project/show", { project });
   } catch (error) {
     next(new ExpressError("Project not found", 404));

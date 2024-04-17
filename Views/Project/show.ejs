@@ -14,5 +14,31 @@
 </form>
 <hr />
 
-<a class="btn btn-primary" href="/new/todo">Add New Todo</a>
+<a class="btn btn-primary" href="/project/<%= project.id %>/todo/new"
+  >Add New Todo</a
+>
+<div class="row my-2">
+  <div class="col-md-6">
+    <h4>Pending Task</h4>
+    <ol>
+      <% for(let t of project.todos){ %> <% if(t.status === false) { %>
+      <li>
+        <%= t.title %>
+        <a href="" class="bi bi-folder2-open btn"></a>
+      </li>
+      <% } %> <% } %>
+    </ol>
+  </div>
+  <div class="col-md-6">
+    <h4>Completed</h4>
+    <ol>
+      <% for(let t of project.todos){ %> <% if(t.status === true) { %>
+      <li>
+        <%= t.title %>
+        <a href="" class="bi bi-folder2-open btn"></a>
+      </li>
+      <% } %> <% } %>
+    </ol>
+  </div>
+</div>
 <a href="/project" class="btn btn-dark">Back</a>
