@@ -24,7 +24,7 @@ app.engine("ejs", engine);
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
-
+app.use(express.static(path.join(__dirname, "Public")));
 //home page
 app.get("/", (req, res) => {
   res.render("home");
