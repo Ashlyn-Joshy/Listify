@@ -25,7 +25,12 @@
     <!-- navbar -->
     <%- include('../partials/navbar') %>
     <!-- the body part -->
-    <div class="container my-2"><%-body -%></div>
+    <div class="container my-2">
+      <!-- flash message -->
+      <%- include('../partials/flash') %>
+      <!-- the main body part -->
+      <%-body -%>
+    </div>
     <!-- footer -->
     <%- include('../partials/footer') %>
     <!-- bootstrap js  -->

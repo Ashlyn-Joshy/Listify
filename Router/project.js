@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Project = require("../Model/Project");
 const ExpressError = require("../ErrorHandling/expressError");
+const { validateProject } = require("../middleware/fundamental");
 
 //to display all projects
 router.get("/project", async (req, res) => {
@@ -14,10 +15,11 @@ router.get("/project", async (req, res) => {
 router.get("/project/new", (req, res) => {
   res.render("Project/new");
 });
-router.post("/project", async (req, res) => {
-  const project = await new Project(req.body);
+router.post("/project", validateProject, async (req, res) => {
+  const project = await new Project(req.body.Project);
   project.createdDate = new Date();
   await project.save();
+  req.flash("success", "New project is created");
   res.redirect(`/project/${project.id}`);
 });
 
@@ -42,10 +44,11 @@ router.get("/project/:id/edit", async (req, res, next) => {
     next(new ExpressError("Project not found", 404));
   }
 });
-router.put("/project/:id", async (req, res) => {
+router.put("/project/:id", validateProject, async (req, res) => {
   const { id } = req.params;
-  const project = await Project.findByIdAndUpdate(id, req.body);
+  const project = await Project.findByIdAndUpdate(id, req.body.Project);
   await project.save();
+  req.flash("success", "Project data is updated");
   res.redirect(`/project/${id}`);
 });
 
@@ -54,6 +57,7 @@ router.delete("/project/:id", async (req, res) => {
   const { id } = req.params;
   //if a project is deleting then all the todos in the project also need to deleted - middleware in project model
   await Project.findByIdAndDelete(id);
+  req.flash("error", "Project is deleted");
   res.redirect(`/project`);
 });
 

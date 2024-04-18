@@ -4,6 +4,7 @@ const router = express.Router();
 const Project = require("../Model/Project");
 const Todo = require("../Model/Todo");
 const ExpressError = require("../ErrorHandling/expressError");
+const { validateTodo } = require("../middleware/fundamental");
 
 //adding todo to the project
 router.get("/project/:id/todo/new", async (req, res, next) => {
@@ -15,15 +16,16 @@ router.get("/project/:id/todo/new", async (req, res, next) => {
     next(new ExpressError("Project not found", 404));
   }
 });
-router.post("/project/:id", async (req, res) => {
+router.post("/project/:id", validateTodo, async (req, res) => {
   const { id } = req.params;
-  const todo = await new Todo(req.body);
+  const todo = await new Todo(req.body.Todo);
   const project = await Project.findById(id);
   project.todos.push(todo);
   todo.status = false;
   todo.createdDate = new Date();
   await todo.save();
   await project.save();
+  req.flash("success", "New todo is created");
   res.redirect(`/project/${id}`);
 });
 
@@ -50,13 +52,14 @@ router.get("/project/:id/todo/:todoId/edit", async (req, res, next) => {
     next(new ExpressError("Todo not found", 404));
   }
 });
-router.put("/project/:id/todo/:todoId", async (req, res) => {
+router.put("/project/:id/todo/:todoId", validateTodo, async (req, res) => {
   const { id, todoId } = req.params;
-  const todo = await Todo.findByIdAndUpdate(todoId, req.body);
+  const todo = await Todo.findByIdAndUpdate(todoId, req.body.Todo);
   const project = await Project.findById(id);
   todo.updatedDate = new Date();
   await todo.save();
   await project.save();
+  req.flash("success", "Todo data is updated");
   res.redirect(`/project/${id}/todo/${todoId}`);
 });
 
@@ -69,6 +72,7 @@ router.delete("/project/:id/todo/:todoId", async (req, res) => {
   });
   await Todo.findByIdAndDelete(todoId);
   await project.save();
+  req.flash("error", "Todo is deleted from the project");
   res.redirect(`/project/${id}`);
 });
 module.exports = router;
