@@ -52,6 +52,7 @@ router.put("/project/:id", async (req, res) => {
 //to delete a particular project
 router.delete("/project/:id", async (req, res) => {
   const { id } = req.params;
+  //if a project is deleting then all the todos in the project also need to deleted - middleware in project model
   await Project.findByIdAndDelete(id);
   res.redirect(`/project`);
 });
