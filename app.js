@@ -10,6 +10,7 @@ const flash = require("connect-flash");
 const ExpressError = require("./ErrorHandling/expressError");
 const todoRouter = require("./Router/todo");
 const projectRouter = require("./Router/project");
+const userRouter = require("./Router/user");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/listify");
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(flash());
 app.use(express.static(path.join(__dirname, "Public")));
+app.use(express.json());
 
 //session config
 const sessionConfig = {
@@ -54,6 +56,7 @@ app.get("/", (req, res) => {
 });
 app.use("/", todoRouter);
 app.use("/", projectRouter);
+app.use("/", userRouter);
 
 //if page is not define
 app.get("*", (req, res, next) => {

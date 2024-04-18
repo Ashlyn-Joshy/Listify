@@ -1,0 +1,51 @@
+<% layout('layout/boilerplate') -%>
+<div class="col-md-6 offset-md-3">
+  <h1>Register</h1>
+  <form action="/register" method="post" class="form-validation" novalidate>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" name="name" id="name" class="form-control" required />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirm Password</label>
+      <input
+        type="password"
+        name="confirmPassword"
+        id="confirmPassword"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <button class="btn btn-success">Register</button>
+  </form>
+</div>
+
+<!-- name email password confirm password if(password !== confirm password Confirm Password) ==> error -->
