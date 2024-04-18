@@ -52,7 +52,7 @@ router.put("/project/:id", async (req, res) => {
 //to delete a particular project
 router.delete("/project/:id", async (req, res) => {
   const { id } = req.params;
-  const project = await Project.findByIdAndDelete(id);
+  await Project.findByIdAndDelete(id);
   res.redirect(`/project`);
 });
 

@@ -26,4 +26,49 @@ router.post("/project/:id", async (req, res) => {
   await project.save();
   res.redirect(`/project/${id}`);
 });
+
+//show the todo in the project
+router.get("/project/:id/todo/:todoId", async (req, res, next) => {
+  const { id, todoId } = req.params;
+  try {
+    const project = await Project.findById(id);
+    const todo = await Todo.findById(todoId);
+    res.render("todo/show", { project, todo });
+  } catch (error) {
+    next(new ExpressError("Todo not found", 404));
+  }
+});
+
+//edit the todo in the project
+router.get("/project/:id/todo/:todoId/edit", async (req, res, next) => {
+  const { id, todoId } = req.params;
+  try {
+    const project = await Project.findById(id);
+    const todo = await Todo.findById(todoId);
+    res.render("todo/edit", { project, todo });
+  } catch (error) {
+    next(new ExpressError("Todo not found", 404));
+  }
+});
+router.put("/project/:id/todo/:todoId", async (req, res) => {
+  const { id, todoId } = req.params;
+  const todo = await Todo.findByIdAndUpdate(todoId, req.body);
+  const project = await Project.findById(id);
+  todo.updatedDate = new Date();
+  await todo.save();
+  await project.save();
+  res.redirect(`/project/${id}/todo/${todoId}`);
+});
+
+//delete the todo in the project
+router.delete("/project/:id/todo/:todoId", async (req, res) => {
+  const { id, todoId } = req.params;
+  //if a todo is deleting it should also delete from the project
+  const project = await Project.findByIdAndUpdate(id, {
+    $pull: { todos: todoId },
+  });
+  await Todo.findByIdAndDelete(todoId);
+  await project.save();
+  res.redirect(`/project/${id}`);
+});
 module.exports = router;

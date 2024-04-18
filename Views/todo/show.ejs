@@ -1,0 +1,25 @@
+<% layout('layout/boilerplate') -%>
+<h1>Project Name : <%= project.title %></h1>
+<h2>Task : <%= todo.title %></h2>
+<hr />
+<h3>Task Summary</h3>
+<p><%= todo.description %></p>
+<h6>Task created Date : <%= todo.createdDate %></h6>
+<% if(todo.updatedDate){ %>
+<h6>Task Updated Date : <%= todo.updatedDate %></h6>
+<% } %>
+<a
+  class="btn btn-secondary"
+  href="/project/<%= project.id %>/todo/<%= todo.id %>/edit"
+  >Edit</a
+>
+<form
+  action="/project/<%= project.id %>/todo/<%= todo.id %>?_method=DELETE"
+  method="post"
+  class="d-inline"
+>
+  <button class="btn btn-danger">Delete</button>
+</form>
+<hr />
+
+<a href="/project/<%= project.id %>" class="btn btn-dark">Back</a>

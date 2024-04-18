@@ -24,7 +24,14 @@
       <% for(let t of project.todos){ %> <% if(t.status === false) { %>
       <li>
         <%= t.title %>
-        <a href="" class="bi bi-folder2-open btn"></a>
+        <a
+          href="/project/<%= project.id %>/todo/<%= t.id %>"
+          class="bi bi-eye-fill btn"
+        ></a>
+        <a
+          href="/project/<%= project.id %>/todo/<%= t.id %>/edit"
+          class="bi bi-pencil-square btn"
+        ></a>
       </li>
       <% } %> <% } %>
     </ol>
@@ -35,7 +42,14 @@
       <% for(let t of project.todos){ %> <% if(t.status === true) { %>
       <li>
         <%= t.title %>
-        <a href="" class="bi bi-folder2-open btn"></a>
+        <a
+          href="/project/<%= project.id %>/todo/<%= t.id %>"
+          class="bi bi-eye-fill btn"
+        ></a>
+        <a
+          href="/project/<%= project.id %>/todo/<%= t.id %>/edit"
+          class="bi bi-pencil-square btn"
+        ></a>
       </li>
       <% } %> <% } %>
     </ol>
