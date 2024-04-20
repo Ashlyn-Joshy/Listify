@@ -3,16 +3,16 @@ const router = express.Router();
 
 const Project = require("../Model/Project");
 const ExpressError = require("../ErrorHandling/expressError");
-const { validateProject } = require("../middleware/fundamental");
+const { validateProject, auth } = require("../middleware/fundamental");
 
 //to display all projects
-router.get("/project", async (req, res) => {
+router.get("/project", auth, async (req, res) => {
   const project = await Project.find({});
   res.render("Project", { project });
 });
 
 //to add a new project
-router.get("/project/new", (req, res) => {
+router.get("/project/new", auth, (req, res) => {
   res.render("Project/new");
 });
 router.post("/project", validateProject, async (req, res) => {
@@ -24,7 +24,7 @@ router.post("/project", validateProject, async (req, res) => {
 });
 
 //to show only one particular project
-router.get("/project/:id", async (req, res, next) => {
+router.get("/project/:id", auth, async (req, res, next) => {
   const { id } = req.params;
   try {
     const project = await Project.findById(id).populate("todos");
@@ -35,7 +35,7 @@ router.get("/project/:id", async (req, res, next) => {
 });
 
 //to edit a particular project
-router.get("/project/:id/edit", async (req, res, next) => {
+router.get("/project/:id/edit", auth, async (req, res, next) => {
   const { id } = req.params;
   try {
     const project = await Project.findById(id);
@@ -53,7 +53,7 @@ router.put("/project/:id", validateProject, async (req, res) => {
 });
 
 //to delete a particular project
-router.delete("/project/:id", async (req, res) => {
+router.delete("/project/:id", auth, async (req, res) => {
   const { id } = req.params;
   //if a project is deleting then all the todos in the project also need to deleted - middleware in project model
   await Project.findByIdAndDelete(id);

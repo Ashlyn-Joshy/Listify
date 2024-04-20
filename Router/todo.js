@@ -4,10 +4,10 @@ const router = express.Router();
 const Project = require("../Model/Project");
 const Todo = require("../Model/Todo");
 const ExpressError = require("../ErrorHandling/expressError");
-const { validateTodo } = require("../middleware/fundamental");
+const { validateTodo, auth } = require("../middleware/fundamental");
 
 //adding todo to the project
-router.get("/project/:id/todo/new", async (req, res, next) => {
+router.get("/project/:id/todo/new", auth, async (req, res, next) => {
   const { id } = req.params;
   try {
     const project = await Project.findById(id);
@@ -30,7 +30,7 @@ router.post("/project/:id", validateTodo, async (req, res) => {
 });
 
 //show the todo in the project
-router.get("/project/:id/todo/:todoId", async (req, res, next) => {
+router.get("/project/:id/todo/:todoId", auth, async (req, res, next) => {
   const { id, todoId } = req.params;
   try {
     const project = await Project.findById(id);
@@ -42,7 +42,7 @@ router.get("/project/:id/todo/:todoId", async (req, res, next) => {
 });
 
 //edit the todo in the project
-router.get("/project/:id/todo/:todoId/edit", async (req, res, next) => {
+router.get("/project/:id/todo/:todoId/edit", auth, async (req, res, next) => {
   const { id, todoId } = req.params;
   try {
     const project = await Project.findById(id);
@@ -64,7 +64,7 @@ router.put("/project/:id/todo/:todoId", validateTodo, async (req, res) => {
 });
 
 //delete the todo in the project
-router.delete("/project/:id/todo/:todoId", async (req, res) => {
+router.delete("/project/:id/todo/:todoId", auth, async (req, res) => {
   const { id, todoId } = req.params;
   //if a todo is deleting it should also delete from the project
   const project = await Project.findByIdAndUpdate(id, {
@@ -75,4 +75,5 @@ router.delete("/project/:id/todo/:todoId", async (req, res) => {
   req.flash("error", "Todo is deleted from the project");
   res.redirect(`/project/${id}`);
 });
+
 module.exports = router;

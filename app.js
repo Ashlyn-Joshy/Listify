@@ -1,16 +1,20 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
-const ejs = require("ejs");
 const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
 
 const ExpressError = require("./ErrorHandling/expressError");
 const todoRouter = require("./Router/todo");
 const projectRouter = require("./Router/project");
 const userRouter = require("./Router/user");
+const { checkUser } = require("./middleware/fundamental");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/listify");
@@ -21,7 +25,6 @@ db.once("open", () => {
 });
 
 const app = express();
-
 // use ejs-locals for all ejs templates:
 app.engine("ejs", engine);
 
@@ -33,6 +36,7 @@ app.use(methodOverride("_method"));
 app.use(flash());
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(express.json());
+app.use(cookieParser());
 
 //session config
 const sessionConfig = {
@@ -50,7 +54,8 @@ app.use((req, res, next) => {
   next();
 });
 
-//home page
+//all the routers
+app.get("*", checkUser); // information about the current user
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -71,7 +76,7 @@ app.use((err, req, res, next) => {
   res.status(status).render("errorPage", { err });
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`working on ${port}`);
 });
